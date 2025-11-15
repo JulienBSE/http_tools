@@ -12,6 +12,7 @@ npm run install:all
 ```
 
 Cette commande installe :
+
 - Les dépendances de la racine (concurrently pour démarrer les deux serveurs)
 - Les dépendances du backend (Express, SQLite, etc.)
 - Les dépendances du frontend (React, Vite, etc.)
@@ -25,6 +26,7 @@ npm run dev
 ```
 
 Cette commande démarre automatiquement :
+
 - ✅ **Backend** sur `http://localhost:3000`
 - ✅ **Frontend** sur `http://localhost:5173`
 
@@ -64,6 +66,7 @@ Une fois les serveurs démarrés, ouvrez `http://localhost:5173` dans votre navi
 ### 2. Vérifier le modèle Draw.io
 
 La section "Modèle Draw.io" affiche :
+
 - Le nom du fichier modèle actuel
 - La date d'upload
 - Un bouton pour mettre à jour le modèle si nécessaire
@@ -73,12 +76,14 @@ La section "Modèle Draw.io" affiche :
 Cliquez sur "Sélectionner un fichier JSON" et choisissez votre fichier.
 
 **Format attendu :** Tableau JSON avec des objets contenant :
+
 - `NomArmoire` : Nom de l'armoire
 - `NomEquipement` : Nom de l'équipement
 - `NomPoint` : Nom du point
 - `TypePoint` : Type du point (DI, DO, AI, AO, COM : ...)
 
 **Exemple :**
+
 ```json
 [
   {
@@ -93,10 +98,12 @@ Cliquez sur "Sélectionner un fichier JSON" et choisissez votre fichier.
 ### 4. Sélectionner les cartes
 
 Les cartes sont automatiquement chargées et groupées par :
+
 - **Marque** (ex: Schneider, Isma, etc.)
 - **Type** (ex: automate, carte, etc.)
 
 Pour chaque carte :
+
 - Utilisez les boutons **+** et **-** pour ajuster la quantité
 - Ou saisissez directement la quantité dans le champ
 - **Note :** Les automates sont limités à 1
@@ -119,27 +126,27 @@ Cliquez sur "Générer le schéma". Le fichier `.drawio` sera automatiquement t�
 
 ### À la racine du projet
 
-| Commande | Description |
-|----------|-------------|
-| `npm run dev` | Démarre frontend + backend en parallèle |
-| `npm run dev:backend` | Démarre uniquement le backend |
-| `npm run dev:frontend` | Démarre uniquement le frontend |
-| `npm run install:all` | Installe toutes les dépendances |
+| Commande               | Description                             |
+| ---------------------- | --------------------------------------- |
+| `npm run dev`          | Démarre frontend + backend en parallèle |
+| `npm run dev:backend`  | Démarre uniquement le backend           |
+| `npm run dev:frontend` | Démarre uniquement le frontend          |
+| `npm run install:all`  | Installe toutes les dépendances         |
 
 ### Dans le dossier `backend/`
 
-| Commande | Description |
-|----------|-------------|
+| Commande      | Description                                                  |
+| ------------- | ------------------------------------------------------------ |
 | `npm run dev` | Démarre le serveur en mode watch (redémarre automatiquement) |
-| `npm start` | Démarre le serveur en mode production |
+| `npm start`   | Démarre le serveur en mode production                        |
 
 ### Dans le dossier `frontend/`
 
-| Commande | Description |
-|----------|-------------|
-| `npm run dev` | Démarre le serveur de développement Vite |
-| `npm run build` | Compile l'application pour la production |
-| `npm run preview` | Prévisualise le build de production |
+| Commande          | Description                              |
+| ----------------- | ---------------------------------------- |
+| `npm run dev`     | Démarre le serveur de développement Vite |
+| `npm run build`   | Compile l'application pour la production |
+| `npm run preview` | Prévisualise le build de production      |
 
 ---
 
@@ -166,6 +173,7 @@ Cliquez sur "Générer le schéma". Le fichier `.drawio` sera automatiquement t�
 ### Erreur "Port already in use"
 
 Un autre processus utilise le port. Soit :
+
 - Arrêtez l'autre processus
 - Ou modifiez le port dans la configuration
 
@@ -180,6 +188,7 @@ Si ce n'est pas le cas, copiez-le depuis `projet_python/db_sqlite.sqlite3`.
 ### Erreur "Fichier JSON invalide"
 
 Le fichier JSON doit être :
+
 - Un tableau JSON valide (commence par `[` et se termine par `]`)
 - Encodé en UTF-8 (avec ou sans BOM)
 - Chaque objet doit contenir : `NomArmoire`, `NomEquipement`, `NomPoint`, `TypePoint`
@@ -216,6 +225,7 @@ docker compose logs -f
 ```
 
 L'application sera accessible sur :
+
 - **Frontend** : `http://votre-serveur:8888` (port 8888)
 - **Backend API** : `http://votre-serveur:3000`
 
@@ -253,6 +263,7 @@ L'application sera accessible sur :
 ## 🎨 Couleurs de l'Application
 
 L'application utilise les couleurs de la boîte :
+
 - **Vert foncé :** `#4B707C`
 - **Vert clair :** `#53C0A5`
 
