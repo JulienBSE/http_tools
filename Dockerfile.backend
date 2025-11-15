@@ -40,11 +40,22 @@ RUN cp database.sqlite3 database.sqlite3.initial 2>/dev/null || echo "⚠️ dat
 # Créer le dossier modeles.initial et copier les modèles depuis le code copié
 # Les modèles sont déjà dans ./modeles/ grâce au COPY backend/ ci-dessus
 RUN mkdir -p ./modeles.initial && \
-    if [ -d "./modeles" ] && [ "$(ls -A ./modeles 2>/dev/null)" ]; then \
-        cp -r ./modeles/* ./modeles.initial/; \
-        echo "✅ Modèles copiés dans modeles.initial"; \
+    echo "🔍 Vérification du dossier modeles..." && \
+    if [ -d "./modeles" ]; then \
+        echo "   Dossier modeles existe" && \
+        echo "   Contenu:" && \
+        ls -la ./modeles/ || echo "   (vide)" && \
+        if [ "$(ls -A ./modeles 2>/dev/null)" ]; then \
+            echo "   Copie des modèles..." && \
+            cp -r ./modeles/* ./modeles.initial/ && \
+            echo "✅ Modèles copiés dans modeles.initial" && \
+            echo "   Vérification:" && \
+            ls -la ./modeles.initial/ || echo "   (erreur)"; \
+        else \
+            echo "⚠️ Dossier modeles est vide"; \
+        fi; \
     else \
-        echo "⚠️ Dossier modeles vide ou absent, sera initialisé au démarrage"; \
+        echo "⚠️ Dossier modeles n'existe pas"; \
     fi
 
 # Créer les dossiers nécessaires
