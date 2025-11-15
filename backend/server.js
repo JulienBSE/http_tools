@@ -10,7 +10,7 @@
 import express from 'express';
 import fileUpload from 'express-fileupload';
 import cors from 'cors';
-import { writeFileSync, readFileSync, unlinkSync } from 'fs';
+import { writeFileSync, readFileSync, unlinkSync, existsSync } from 'fs';
 import { join } from 'path';
 import { tmpdir } from 'os';
 
@@ -141,6 +141,59 @@ app.get('/modele-info', (req, res) => {
     } catch (error) {
         console.error('Erreur lors de la récupération des infos du modèle :', error);
         res.status(500).json({ erreur: 'Erreur lors de la récupération des infos du modèle' });
+    }
+});
+
+// GET /database/download - Télécharger la base de données
+app.get('/database/download', (req, res) => {
+    try {
+        console.log('📥 [SERVER] GET /database/download - Téléchargement de la base de données');
+        
+        if (!existsSync(CHEMIN_BDD)) {
+            return res.status(404).json({ erreur: 'Base de données non trouvée' });
+        }
+        
+        const contenuBdd = readFileSync(CHEMIN_BDD);
+        
+        res.setHeader('Content-Type', 'application/x-sqlite3');
+        res.setHeader('Content-Disposition', 'attachment; filename="database.sqlite3"');
+        res.send(contenuBdd);
+        
+        console.log('✅ [SERVER] GET /database/download - Base de données téléchargée');
+    } catch (error) {
+        console.error('❌ [SERVER] GET /database/download - Erreur :', error);
+        res.status(500).json({ erreur: 'Erreur lors du téléchargement de la base de données' });
+    }
+});
+
+// POST /database/upload - Mettre à jour la base de données
+app.post('/database/upload', (req, res) => {
+    try {
+        console.log('📤 [SERVER] POST /database/upload - Upload de la base de données');
+        
+        if (!req.files || !req.files.database) {
+            return res.status(400).json({ erreur: 'Aucun fichier base de données fourni' });
+        }
+        
+        const fichierBdd = req.files.database;
+        
+        // Vérifier que c'est bien un fichier .sqlite3
+        if (!fichierBdd.name.endsWith('.sqlite3')) {
+            return res.status(400).json({ erreur: 'Le fichier doit être un fichier .sqlite3' });
+        }
+        
+        // Sauvegarder la base de données
+        writeFileSync(CHEMIN_BDD, fichierBdd.data);
+        
+        console.log('✅ [SERVER] POST /database/upload - Base de données mise à jour');
+        
+        res.json({
+            message: 'Base de données mise à jour avec succès',
+            taille: fichierBdd.size
+        });
+    } catch (error) {
+        console.error('❌ [SERVER] POST /database/upload - Erreur :', error);
+        res.status(500).json({ erreur: 'Erreur lors de la mise à jour de la base de données' });
     }
 });
 

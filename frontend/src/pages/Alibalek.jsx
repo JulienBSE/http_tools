@@ -131,6 +131,78 @@ function Alibalek() {
   };
 
   /**
+   * Télécharge la base de données
+   */
+  const telechargerBaseDeDonnees = async () => {
+    try {
+      const reponse = await fetch('/api/database/download');
+      if (!reponse.ok) {
+        throw new Error('Erreur lors du téléchargement');
+      }
+      const blob = await reponse.blob();
+      const url = window.URL.createObjectURL(blob);
+      const lien = document.createElement('a');
+      lien.href = url;
+      lien.download = 'database.sqlite3';
+      document.body.appendChild(lien);
+      lien.click();
+      document.body.removeChild(lien);
+      window.URL.revokeObjectURL(url);
+      alert('Base de données téléchargée avec succès !');
+    } catch (erreur) {
+      console.error('Erreur:', erreur);
+      alert('Erreur lors du téléchargement de la base de données');
+    }
+  };
+
+  /**
+   * Gère l'upload d'une nouvelle base de données
+   */
+  const gererUploadBaseDeDonnees = async (event) => {
+    const fichier = event.target.files[0];
+    
+    if (!fichier) {
+      return;
+    }
+
+    if (!fichier.name.endsWith('.sqlite3')) {
+      alert('Veuillez sélectionner un fichier .sqlite3');
+      event.target.value = '';
+      return;
+    }
+
+    if (!confirm('Êtes-vous sûr de vouloir remplacer la base de données actuelle ? Cette action est irréversible.')) {
+      event.target.value = '';
+      return;
+    }
+
+    try {
+      const formData = new FormData();
+      formData.append('database', fichier);
+
+      const reponse = await fetch('/api/database/upload', {
+        method: 'POST',
+        body: formData
+      });
+
+      if (!reponse.ok) {
+        throw new Error('Erreur lors de la mise à jour de la base de données');
+      }
+
+      const donnees = await reponse.json();
+      alert('Base de données mise à jour avec succès ! Les cartes seront rechargées.');
+      
+      // Recharger les cartes après la mise à jour
+      chargerCartes();
+    } catch (erreur) {
+      console.error('Erreur:', erreur);
+      alert('Erreur lors de la mise à jour de la base de données');
+    } finally {
+      event.target.value = ''; // Réinitialiser l'input
+    }
+  };
+
+  /**
    * Formate une date ISO en format français lisible
    */
   const formaterDate = (dateISO) => {
@@ -485,6 +557,35 @@ function Alibalek() {
         ) : (
           <p>Chargement des informations du modèle...</p>
         )}
+      </section>
+
+      {/* Section 0.5 : Gestion de la base de données */}
+      <section className="section-modele">
+        <h3>Base de données SQLite</h3>
+        <div className="info-modele">
+          <div className="info-modele-details">
+            <p><strong>Fichier :</strong> database.sqlite3</p>
+            <p><strong>Description :</strong> Base de données contenant les informations des cartes automates</p>
+          </div>
+          <div className="info-modele-actions" style={{ display: 'flex', gap: '1rem' }}>
+            <button
+              onClick={telechargerBaseDeDonnees}
+              className="bouton-secondaire"
+            >
+              📥 Télécharger
+            </button>
+            <input
+              type="file"
+              accept=".sqlite3"
+              onChange={gererUploadBaseDeDonnees}
+              id="input-database"
+              style={{ display: 'none' }}
+            />
+            <label htmlFor="input-database" className="bouton-secondaire">
+              📤 Mettre à jour
+            </label>
+          </div>
+        </div>
       </section>
 
       {/* Section 1 : Upload du fichier JSON */}

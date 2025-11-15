@@ -59,7 +59,9 @@ Thumbs.db
 # ============================================
 # Base de données SQLite
 # ============================================
-# backend/database.db (décommenter si nécessaire)
+# Note: backend/database.sqlite3 est COMMITÉ dans le repo
+# Il est léger et nécessaire pour le déploiement Docker
+# backend/database.sqlite3 (ne pas ignorer)
 
 # ============================================
 # Fichiers de sortie générés

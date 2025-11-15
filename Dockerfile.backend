@@ -32,8 +32,16 @@ RUN npm install --only=production --verbose
 # Copier tout le code du backend
 COPY backend/ ./
 
+# Copier le fichier database.sqlite3 initial (sera utilisé par le script d'init)
+# Le fichier sera copié dans le volume Docker au démarrage si nécessaire
+# Note: Si le fichier n'existe pas, le build continuera et le script d'init gérera le cas
+COPY backend/database.sqlite3 ./database.sqlite3.initial
+
 # Créer les dossiers nécessaires
 RUN mkdir -p output && mkdir -p data
+
+# Rendre le script d'initialisation exécutable
+RUN chmod +x init-db.sh || true
 
 # Exposer le port sur lequel le serveur écoute
 EXPOSE 3000
@@ -41,6 +49,10 @@ EXPOSE 3000
 # Variable d'environnement pour Node.js (production)
 ENV NODE_ENV=production
 
+# Script d'entrypoint qui initialise la BDD puis démarre le serveur
+COPY backend/init-db.sh ./init-db.sh
+RUN chmod +x init-db.sh
+
 # Commande pour démarrer le serveur
-# Utiliser "node" au lieu de "node --watch" en production
-CMD ["node", "server.js"]
+# Le script d'init copie database.sqlite3 dans le volume si nécessaire
+CMD ["sh", "-c", "./init-db.sh && node server.js"]
