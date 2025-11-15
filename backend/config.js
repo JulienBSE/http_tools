@@ -6,7 +6,7 @@
 
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";
-import { existsSync } from "fs";
+import { existsSync, mkdirSync } from "fs";
 
 // Récupérer le chemin du dossier backend (équivalent de __dirname en CommonJS)
 const __filename = fileURLToPath(import.meta.url);
@@ -48,15 +48,13 @@ if (!existsSync(CHEMIN_BDD)) {
   );
 }
 
-// Vérifier que le dossier des modèles existe
+// Créer le dossier modeles s'il n'existe pas (pour Docker)
 if (!existsSync(CHEMIN_MODELES)) {
-  console.warn(
-    `⚠️  Attention : Le dossier des modèles n'existe pas à ${CHEMIN_MODELES}`
-  );
+  mkdirSync(CHEMIN_MODELES, { recursive: true });
+  console.log(`📁 Dossier modeles créé : ${CHEMIN_MODELES}`);
 }
 
 // Créer le dossier output s'il n'existe pas
-import { mkdirSync } from "fs";
 if (!existsSync(CHEMIN_OUTPUT)) {
   mkdirSync(CHEMIN_OUTPUT, { recursive: true });
   console.log(`📁 Dossier output créé : ${CHEMIN_OUTPUT}`);

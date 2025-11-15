@@ -15,11 +15,17 @@ import { CHEMIN_MODELES, NOM_MODELE_DEFAULT } from '../config.js';
 export function getModeleInfo() {
     const cheminModele = join(CHEMIN_MODELES, NOM_MODELE_DEFAULT);
     
+    console.log(`🔍 [modeleInfo] Recherche du modèle à : ${cheminModele}`);
+    console.log(`🔍 [modeleInfo] CHEMIN_MODELES : ${CHEMIN_MODELES}`);
+    console.log(`🔍 [modeleInfo] Dossier modeles existe : ${existsSync(CHEMIN_MODELES)}`);
+    
     if (!existsSync(cheminModele)) {
+        console.error(`❌ [modeleInfo] Fichier modèle non trouvé : ${cheminModele}`);
         return null;
     }
     
     const stats = statSync(cheminModele);
+    console.log(`✅ [modeleInfo] Modèle trouvé : ${cheminModele} (${stats.size} bytes)`);
     
     return {
         nom: NOM_MODELE_DEFAULT,

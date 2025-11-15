@@ -37,8 +37,11 @@ COPY backend/ ./
 # Note: Si le fichier n'existe pas, le build continuera et le script d'init gérera le cas
 COPY backend/database.sqlite3 ./database.sqlite3.initial
 
+# Copier les modèles Draw.io dans l'image (seront utilisés si le volume est vide)
+COPY backend/modeles ./modeles.initial
+
 # Créer les dossiers nécessaires
-RUN mkdir -p output && mkdir -p data
+RUN mkdir -p output && mkdir -p data && mkdir -p modeles
 
 # Rendre le script d'initialisation exécutable
 RUN chmod +x init-db.sh || true

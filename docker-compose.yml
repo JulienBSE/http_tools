@@ -40,8 +40,9 @@ services:
       # Base de données SQLite (volume nommé - créé automatiquement)
       # Le fichier sera créé par l'application dans ce volume
       - http-tools-db:/app/data
-      # Modèles Draw.io (depuis le repo Git - doit exister)
-      - ./backend/modeles:/app/modeles:ro
+      # Modèles Draw.io (volume nommé pour permettre les mises à jour via l'interface web)
+      # Les modèles initiaux sont copiés depuis l'image au démarrage
+      - http-tools-modeles:/app/modeles
       # Dossier de sortie (pour les fichiers générés)
       - ./backend/output:/app/output
 
@@ -105,4 +106,7 @@ networks:
 volumes:
   # Volume pour la base de données SQLite
   http-tools-db:
+    driver: local
+  # Volume pour les modèles Draw.io
+  http-tools-modeles:
     driver: local
