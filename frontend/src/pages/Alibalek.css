@@ -1,0 +1,435 @@
+/* ============================================
+   STYLES DE LA PAGE ALIBALEK
+   ============================================ */
+
+.alibalek {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* ============================================
+   SECTION MODÈLE DRAW.IO
+   ============================================ */
+.section-modele {
+  background: #f0f8ff;
+  border-left: 4px solid #53C0A5;
+}
+
+.info-modele {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.info-modele-details {
+  flex: 1;
+  min-width: 250px;
+}
+
+.info-modele-details p {
+  margin: 0.5rem 0;
+  color: #333;
+}
+
+.info-modele-details strong {
+  color: #4B707C;
+  margin-right: 0.5rem;
+}
+
+.info-modele-actions {
+  flex-shrink: 0;
+}
+
+.alibalek h2 {
+  color: #333;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+}
+
+/* ============================================
+   SECTIONS
+   ============================================ */
+section {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+section h3 {
+  color: #4B707C;
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  border-bottom: 2px solid #53C0A5;
+  padding-bottom: 0.5rem;
+}
+
+/* ============================================
+   UPLOAD DE FICHIER
+   ============================================ */
+.upload-zone {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+#input-fichier {
+  display: none; /* On cache l'input natif */
+}
+
+.bouton-upload {
+  display: inline-block;
+  padding: 1rem 2rem;
+  background: linear-gradient(135deg, #4B707C 0%, #53C0A5 100%);
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.3s ease;
+  border: 2px dashed transparent;
+}
+
+.bouton-upload:hover {
+  background: linear-gradient(135deg, #3a5a64 0%, #45a88a 100%);
+  border-color: #53C0A5;
+}
+
+/* ============================================
+   BOUTONS
+   ============================================ */
+.bouton-principal {
+  background: linear-gradient(135deg, #4B707C 0%, #53C0A5 100%);
+  color: white;
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  max-width: 400px;
+}
+
+.bouton-principal:hover:not(:disabled) {
+  background: linear-gradient(135deg, #3a5a64 0%, #45a88a 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(75, 112, 124, 0.4);
+}
+
+.bouton-principal:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.bouton-secondaire {
+  background: white;
+  color: #4B707C;
+  padding: 0.75rem 1.5rem;
+  border: 2px solid #53C0A5;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+.bouton-secondaire:hover {
+  background: #53C0A5;
+  color: white;
+  border-color: #53C0A5;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(83, 192, 165, 0.3);
+}
+
+.bouton-rafraichir {
+  background: white;
+  color: #4B707C;
+  padding: 0.5rem 1rem;
+  border: 1px solid #53C0A5;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.bouton-rafraichir:hover {
+  background: #f0f0f0;
+  border-color: #4B707C;
+}
+
+/* ============================================
+   LISTE DES CARTES GROUPÉES
+   ============================================ */
+.cartes-groupées {
+  margin-top: 1.5rem;
+}
+
+.groupe-marque {
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.titre-marque-container {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  padding: 0.75rem;
+  margin: -0.75rem -0.75rem 1rem -0.75rem;
+  border-radius: 6px;
+  transition: background 0.2s ease;
+}
+
+.titre-marque-container:hover {
+  background: rgba(83, 192, 165, 0.1);
+}
+
+.chevron {
+  background: none;
+  border: none;
+  color: #4B707C;
+  font-size: 0.9rem;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+.chevron:hover {
+  color: #53C0A5;
+}
+
+.titre-marque {
+  color: #4B707C;
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin: 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #53C0A5;
+  flex: 1;
+}
+
+.groupe-type {
+  margin-bottom: 1.5rem;
+  margin-left: 1rem;
+}
+
+.titre-type {
+  color: #53C0A5;
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin: 0 0 0.75rem 0;
+  text-transform: capitalize;
+}
+
+.liste-cartes {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-left: 1rem;
+}
+
+.carte-item {
+  padding: 1rem;
+  background: white;
+  border-radius: 8px;
+  border: 2px solid #e0e0e0;
+  transition: all 0.3s ease;
+}
+
+.carte-item:hover {
+  border-color: #53C0A5;
+  box-shadow: 0 2px 8px rgba(75, 112, 124, 0.1);
+}
+
+.carte-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.carte-nom {
+  flex: 1;
+  font-weight: 500;
+  color: #333;
+}
+
+.carte-controles {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.bouton-quantite {
+  width: 32px;
+  height: 32px;
+  border: 2px solid #4B707C;
+  background: white;
+  color: #4B707C;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.bouton-quantite:hover:not(:disabled) {
+  background: #4B707C;
+  color: white;
+}
+
+.bouton-quantite:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.input-quantite {
+  width: 50px;
+  text-align: center;
+  padding: 0.5rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+.input-quantite:focus {
+  outline: none;
+  border-color: #53C0A5;
+}
+
+.badge-automate {
+  background: #4B707C;
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.carte-infos {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.85rem;
+  color: #666;
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid #e0e0e0;
+}
+
+.carte-infos span {
+  padding: 0.25rem 0.5rem;
+  background: #f0f0f0;
+  border-radius: 4px;
+}
+
+/* ============================================
+   STATISTIQUES DES POINTS
+   ============================================ */
+.statistiques-points {
+  background: #f8f9fa;
+  border: 2px solid #53C0A5;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.statistiques-points h4 {
+  color: #4B707C;
+  margin: 0 0 1rem 0;
+  font-size: 1.1rem;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  background: white;
+  border-radius: 6px;
+  border: 1px solid #e0e0e0;
+}
+
+.stat-label {
+  font-weight: 600;
+  color: #4B707C;
+  font-size: 1rem;
+}
+
+.stat-valeur {
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.stat-restant {
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.stat-restant.positif {
+  color: #28a745;
+}
+
+.stat-restant.negatif {
+  color: #dc3545;
+  font-weight: 600;
+}
+
+/* ============================================
+   FORMULAIRE DE PARAMÈTRES
+   ============================================ */
+.formulaire-parametres {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.formulaire-parametres label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.formulaire-parametres input {
+  padding: 0.75rem;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.formulaire-parametres input:focus {
+  outline: none;
+  border-color: #53C0A5;
+}
+
+/* ============================================
+   SECTION GÉNÉRATION
+   ============================================ */
+.section-generation {
+  text-align: center;
+  padding: 2rem;
+}
+

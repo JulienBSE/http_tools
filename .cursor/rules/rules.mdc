@@ -1,0 +1,188 @@
+---
+alwaysApply: true
+---
+# PRD — Générateur de Schémas Électriques Draw.io (React + Node.js)
+
+## 🎯 Objectif du produit
+
+Développer une application web interne permettant de générer automatiquement des schémas électriques au format `.drawio` à partir :
+
+- d’un **fichier JSON** fourni par l'utilisateur (liste de points),
+- d’un **modèle Draw.io** existant (fichier XML),
+- d’informations stockées dans une **base SQLite** (cartes automates, propriétés),
+- et de règles d’affectation identiques à celles du projet Python d’origine.
+
+Le but est de reproduire fidèlement la logique du projet Python existant mais en **full JavaScript**, avec une **interface React** pédagogique et un **backend Node.js minimaliste**.
+
+---
+
+# 🏗️ Architecture globale
+
+## Frontend (React + Vite)
+
+Interface utilisateur :
+
+- Upload d’un fichier JSON
+- Sélection du matériel (cartes automates, options projet)
+- Paramètres du projet (nom, automate, etc.)
+- Bouton **Générer**
+- Téléchargement du fichier `.drawio` généré
+
+Le code React doit être :
+
+- **Très commenté**
+- En **français**
+- Variables et fonctions en **français**
+- Explications renforcées sur :
+  - hooks React (useState, useEffect…)
+  - handling des formulaires
+  - upload de fichiers
+  - fetch
+  - composant contrôlé vs non contrôlé
+  - re-render et immutabilité
+
+## Backend (Node.js + Express)
+
+Backend reçoit :
+
+- fichier JSON
+- références des cartes sélectionnées
+- paramètres projet
+
+Puis exécute :
+
+1. **Filtrer les points** selon type (DI, DO, AI, AO, COM…)
+2. **Lire SQLite** pour récupérer info des cartes
+3. **Ordonner les cartes** selon : Automate → AI → DI → DO → AO
+4. **Vérifier la capacité totale**
+5. **Affecter les points aux cartes**
+6. **Générer le XML Draw.io**
+7. **Envoyer un fichier `.drawio` en téléchargement**
+
+### Base SQLite
+
+Utiliser **better-sqlite3** (rapide, synchrone, simple).
+
+---
+
+# 📌 Exigences fonctionnelles
+
+Le site web intrne sera voué a acceuillir plusieurs outil. Il faut donc un menu. Le premier outil s'appel Alibalek (générateur de schéma)
+
+## 1. Upload JSON
+
+Le frontend doit permettre :
+
+- drag & drop ou input file
+- validation de format
+- chargement dans un `useState`
+
+## 2. Sélection du matériel
+
+Le frontend doit permettre :
+
+- d'interroger la BDD pour afficher toutes les cartes disponibles
+- de sélectionner les cartes qui seront utilisées dans le schéma
+
+## 3. Génération du schéma (backend)
+
+### Étape 1 — Filtrage des points
+
+### Étape 2 — Récupérer les cartes depuis SQLite
+
+### Étape 3 — Ordonner les cartes
+
+### Étape 4 — Vérifier capacité
+
+### Étape 5 — Affecter points
+
+### Étape 6 — Générer XML Draw.io
+
+### Étape 7 — Retour du fichier
+
+---
+
+# 🎨 Exigences frontend (React)
+
+## Général
+
+- Code **100% en français**
+- Beaucoup de **commentaires pédagogiques**
+- Interfaces simples
+
+## Composants React attendus :
+
+### Page Upload JSON
+
+- composant d’upload (`<input type="file" />`)
+- explications détaillées sur :
+  - `event.target.files`
+  - `FormData`
+  - stockage dans état React
+
+### Page Configuration
+
+- liste des cartes (venant du backend)
+- sélection des cartes
+- paramètres projet
+- bouton “Générer”
+
+### Gestion du téléchargement
+
+- appel `fetch("/generate")`
+- conversion en blob
+- création d’un lien de téléchargement
+
+---
+
+# 📡 API Backend
+
+## GET `/cartes`
+
+Retourne la liste des cartes disponibles dans SQLite.
+
+## POST `/generate`
+
+Reçoit :
+
+- fichier JSON (multipart)
+- champs `refs` (liste des références de cartes)
+- champs `params` (données projet)
+
+Retour :
+
+- fichier `.drawio`
+
+---
+
+# 🔧 Exigences techniques backend
+
+### Node / Express, dépendances minimales :
+
+- express
+- express-fileupload
+- better-sqlite3
+- xmlbuilder2 ou fast-xml-parser
+
+### Style du code :
+
+- français
+- commentaires détaillés dans chaque module
+- explication de l’algorithme
+- aucune dépendance inutile
+
+---
+
+# 📎 Notes importantes pour Cursor
+
+Cursor doit :
+
+- utiliser des **noms de variables en français**
+- utiliser des **noms de fonctions en français**
+- commenter **chaque fonction** et **chaque étape tricky**
+- commenter **beaucoup plus le React**, notamment :
+  - useState / useEffect
+  - gestion des fichiers
+  - immutabilité
+  - gestion du fetch
+- éviter toute dépendance lourde

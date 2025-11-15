@@ -1,0 +1,45 @@
+# Dépendances
+node_modules/
+**/node_modules/
+package-lock.json
+**/package-lock.json
+
+# Build
+frontend/dist/
+frontend/build/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Environnement
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Base de données SQLite (si elle contient des données sensibles)
+# backend/database.db
+
+# Fichiers de sortie générés
+backend/output/
+*.drawio
+
+# Projet Python (sauvegarde)
+projet_python_save/
+
+# Fichiers de test/debug
+draw_io_generes/
+
+# Fichiers temporaires
+*.tmp
+*.temp
+
