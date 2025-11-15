@@ -7,6 +7,14 @@
 # Utiliser une image Node.js officielle basée sur Debian (pour better-sqlite3)
 FROM node:20-slim
 
+# Installer les outils nécessaires pour compiler better-sqlite3 (module natif)
+# python3, make, g++ sont requis pour compiler les modules Node.js natifs
+RUN apt-get update && apt-get install -y \
+    python3 \
+    make \
+    g++ \
+    && rm -rf /var/lib/apt/lists/*
+
 # Définir le répertoire de travail dans le conteneur
 WORKDIR /app
 
@@ -15,7 +23,7 @@ WORKDIR /app
 COPY backend/package*.json ./
 
 # Installer les dépendances
-# --production=false pour installer aussi les devDependencies si nécessaire
+# --only=production installe uniquement les dépendances de production (pas les devDependencies)
 RUN npm ci --only=production
 
 # Copier tout le code du backend
