@@ -222,5 +222,3 @@ L'application utilise les couleurs de la boîte :
 - `TEST.md` - Guide de test pour vérifier que tout fonctionne
 
 ---
-
-**Bon développement ! 🚀**
