@@ -3,8 +3,9 @@
 # ============================================
 node_modules/
 **/node_modules/
-package-lock.json
-**/package-lock.json
+# Note: package-lock.json est COMMITÉ pour garantir des versions exactes en production
+# package-lock.json
+# **/package-lock.json
 yarn.lock
 pnpm-lock.yaml
 

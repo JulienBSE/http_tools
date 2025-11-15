@@ -23,8 +23,9 @@ WORKDIR /app
 COPY backend/package*.json ./
 
 # Installer les dépendances
+# Utiliser npm install au lieu de npm ci pour plus de flexibilité
 # --only=production installe uniquement les dépendances de production (pas les devDependencies)
-RUN npm ci --only=production
+RUN npm install --only=production --verbose
 
 # Copier tout le code du backend
 COPY backend/ ./
