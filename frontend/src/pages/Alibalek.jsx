@@ -8,12 +8,12 @@
 // 3. Paramètres du projet
 // 4. Bouton de génération
 
-import { useState, useEffect } from 'react';
-import './Alibalek.css';
+import { useState, useEffect } from "react";
+import "./Alibalek.css";
 
 /**
  * Alibalek - Composant principal de l'outil Alibalek
- * 
+ *
  * Ce composant utilise plusieurs useState pour gérer différents états :
  * - Le fichier JSON uploadé
  * - Les cartes sélectionnées
@@ -41,11 +41,11 @@ function Alibalek() {
   // État pour les paramètres du projet
   // On utilise un objet pour regrouper plusieurs valeurs liées
   const [parametresProjet, setParametresProjet] = useState({
-    auteur: '',
-    nomSite: '',
-    nomArmoire: '',
-    dateEdition: new Date().toLocaleDateString('fr-FR'),
-    indice: 'A'
+    auteur: "",
+    nomSite: "",
+    nomArmoire: "",
+    dateEdition: new Date().toLocaleDateString("fr-FR"),
+    indice: "A",
   });
 
   // État pour les informations du modèle Draw.io
@@ -73,13 +73,13 @@ function Alibalek() {
    */
   const chargerInfosModele = async () => {
     try {
-      const reponse = await fetch('/api/modele-info');
+      const reponse = await fetch("/api/modele-info");
       if (reponse.ok) {
         const donnees = await reponse.json();
         setModeleInfo(donnees);
       }
     } catch (erreur) {
-      console.error('Erreur lors du chargement des infos du modèle :', erreur);
+      console.error("Erreur lors du chargement des infos du modèle :", erreur);
     }
   };
 
@@ -88,14 +88,14 @@ function Alibalek() {
    */
   const gererUploadModele = async (event) => {
     const fichier = event.target.files[0];
-    
+
     if (!fichier) {
       return;
     }
 
-    if (!fichier.name.endsWith('.drawio')) {
-      alert('Veuillez sélectionner un fichier .drawio');
-      event.target.value = '';
+    if (!fichier.name.endsWith(".drawio")) {
+      alert("Veuillez sélectionner un fichier .drawio");
+      event.target.value = "";
       return;
     }
 
@@ -103,30 +103,30 @@ function Alibalek() {
 
     try {
       const formData = new FormData();
-      formData.append('modele', fichier);
+      formData.append("modele", fichier);
 
-      const reponse = await fetch('/api/upload-modele', {
-        method: 'POST',
-        body: formData
+      const reponse = await fetch("/api/upload-modele", {
+        method: "POST",
+        body: formData,
       });
 
       if (!reponse.ok) {
-        throw new Error('Erreur lors de la mise à jour du modèle');
+        throw new Error("Erreur lors de la mise à jour du modèle");
       }
 
       const donnees = await reponse.json();
       setModeleInfo({
         nom: donnees.nom,
-        dateUpload: donnees.dateUpload
+        dateUpload: donnees.dateUpload,
       });
 
-      alert('Modèle mis à jour avec succès !');
+      alert("Modèle mis à jour avec succès !");
     } catch (erreur) {
-      console.error('Erreur:', erreur);
-      alert('Erreur lors de la mise à jour du modèle');
+      console.error("Erreur:", erreur);
+      alert("Erreur lors de la mise à jour du modèle");
     } finally {
       setChargementModele(false);
-      event.target.value = ''; // Réinitialiser l'input
+      event.target.value = ""; // Réinitialiser l'input
     }
   };
 
@@ -135,23 +135,23 @@ function Alibalek() {
    */
   const telechargerBaseDeDonnees = async () => {
     try {
-      const reponse = await fetch('/api/database/download');
+      const reponse = await fetch("/api/database/download");
       if (!reponse.ok) {
-        throw new Error('Erreur lors du téléchargement');
+        throw new Error("Erreur lors du téléchargement");
       }
       const blob = await reponse.blob();
       const url = window.URL.createObjectURL(blob);
-      const lien = document.createElement('a');
+      const lien = document.createElement("a");
       lien.href = url;
-      lien.download = 'database.sqlite3';
+      lien.download = "database.sqlite3";
       document.body.appendChild(lien);
       lien.click();
       document.body.removeChild(lien);
       window.URL.revokeObjectURL(url);
-      alert('Base de données téléchargée avec succès !');
+      alert("Base de données téléchargée avec succès !");
     } catch (erreur) {
-      console.error('Erreur:', erreur);
-      alert('Erreur lors du téléchargement de la base de données');
+      console.error("Erreur:", erreur);
+      alert("Erreur lors du téléchargement de la base de données");
     }
   };
 
@@ -160,45 +160,51 @@ function Alibalek() {
    */
   const gererUploadBaseDeDonnees = async (event) => {
     const fichier = event.target.files[0];
-    
+
     if (!fichier) {
       return;
     }
 
-    if (!fichier.name.endsWith('.sqlite3')) {
-      alert('Veuillez sélectionner un fichier .sqlite3');
-      event.target.value = '';
+    if (!fichier.name.endsWith(".sqlite3")) {
+      alert("Veuillez sélectionner un fichier .sqlite3");
+      event.target.value = "";
       return;
     }
 
-    if (!confirm('Êtes-vous sûr de vouloir remplacer la base de données actuelle ? Cette action est irréversible.')) {
-      event.target.value = '';
+    if (
+      !confirm(
+        "Êtes-vous sûr de vouloir remplacer la base de données actuelle ? Cette action est irréversible."
+      )
+    ) {
+      event.target.value = "";
       return;
     }
 
     try {
       const formData = new FormData();
-      formData.append('database', fichier);
+      formData.append("database", fichier);
 
-      const reponse = await fetch('/api/database/upload', {
-        method: 'POST',
-        body: formData
+      const reponse = await fetch("/api/database/upload", {
+        method: "POST",
+        body: formData,
       });
 
       if (!reponse.ok) {
-        throw new Error('Erreur lors de la mise à jour de la base de données');
+        throw new Error("Erreur lors de la mise à jour de la base de données");
       }
 
       const donnees = await reponse.json();
-      alert('Base de données mise à jour avec succès ! Les cartes seront rechargées.');
-      
+      alert(
+        "Base de données mise à jour avec succès ! Les cartes seront rechargées."
+      );
+
       // Recharger les cartes après la mise à jour
       chargerCartes();
     } catch (erreur) {
-      console.error('Erreur:', erreur);
-      alert('Erreur lors de la mise à jour de la base de données');
+      console.error("Erreur:", erreur);
+      alert("Erreur lors de la mise à jour de la base de données");
     } finally {
-      event.target.value = ''; // Réinitialiser l'input
+      event.target.value = ""; // Réinitialiser l'input
     }
   };
 
@@ -206,21 +212,21 @@ function Alibalek() {
    * Formate une date ISO en format français lisible
    */
   const formaterDate = (dateISO) => {
-    if (!dateISO) return 'Non disponible';
+    if (!dateISO) return "Non disponible";
     const date = new Date(dateISO);
-    return date.toLocaleDateString('fr-FR', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
+    return date.toLocaleDateString("fr-FR", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
     });
   };
 
   /**
    * Gestionnaire pour l'upload de fichier
    * Cette fonction est appelée quand l'utilisateur sélectionne un fichier
-   * 
+   *
    * @param {Event} event - L'événement du changement de fichier
    */
   const gererUploadFichier = (event) => {
@@ -230,15 +236,18 @@ function Alibalek() {
 
     if (fichier) {
       // Vérification que c'est bien un fichier JSON
-      if (fichier.type === 'application/json' || fichier.name.endsWith('.json')) {
+      if (
+        fichier.type === "application/json" ||
+        fichier.name.endsWith(".json")
+      ) {
         // On met à jour l'état avec le fichier sélectionné
         // React va re-render le composant avec cette nouvelle valeur
         setFichierJson(fichier);
-        console.log('Fichier sélectionné:', fichier.name);
+        console.log("Fichier sélectionné:", fichier.name);
       } else {
-        alert('Veuillez sélectionner un fichier JSON');
+        alert("Veuillez sélectionner un fichier JSON");
         // On remet l'input à vide
-        event.target.value = '';
+        event.target.value = "";
       }
     }
   };
@@ -249,37 +258,44 @@ function Alibalek() {
    */
   const chargerCartes = async () => {
     try {
-      console.log('📡 [Frontend] Chargement des cartes...');
-      const reponse = await fetch('/api/cartes');
-      
+      console.log("📡 [Frontend] Chargement des cartes...");
+      const reponse = await fetch("/api/cartes");
+
       if (!reponse.ok) {
         const erreurData = await reponse.json().catch(() => ({}));
         throw new Error(erreurData.details || `Erreur HTTP ${reponse.status}`);
       }
 
       const donnees = await reponse.json();
-      console.log('✅ [Frontend] Cartes chargées :', donnees);
+      console.log("✅ [Frontend] Cartes chargées :", donnees);
       setCartesDisponibles(donnees);
     } catch (erreur) {
-      console.error('❌ [Frontend] Erreur lors du chargement des cartes :', erreur);
+      console.error(
+        "❌ [Frontend] Erreur lors du chargement des cartes :",
+        erreur
+      );
       alert(`Erreur lors du chargement des cartes : ${erreur.message}`);
     }
   };
 
   /**
    * Met à jour la quantité d'une carte sélectionnée
-   * 
+   *
    * @param {string} refCarte - Référence de la carte
    * @param {number} quantite - Nouvelle quantité (0 pour désélectionner)
    */
   const mettreAJourQuantite = (refCarte, quantite) => {
-    console.log(`📝 [Frontend] Mise à jour quantité : ${refCarte} = ${quantite}`);
-    
+    console.log(
+      `📝 [Frontend] Mise à jour quantité : ${refCarte} = ${quantite}`
+    );
+
     // Trouver la carte pour vérifier son type
     let typeCarte = null;
     for (const marque in cartesDisponibles) {
       for (const type in cartesDisponibles[marque]) {
-        const carte = cartesDisponibles[marque][type].find(c => c.ref === refCarte);
+        const carte = cartesDisponibles[marque][type].find(
+          (c) => c.ref === refCarte
+        );
         if (carte) {
           typeCarte = carte.type;
           break;
@@ -289,20 +305,20 @@ function Alibalek() {
     }
 
     // Si c'est un automate, limiter à 1
-    if (typeCarte === 'automate' && quantite > 1) {
-      alert('Un seul automate peut être sélectionné');
+    if (typeCarte === "automate" && quantite > 1) {
+      alert("Un seul automate peut être sélectionné");
       quantite = 1;
     }
 
     // Mettre à jour l'état
-    setQuantitesCartes(prev => {
+    setQuantitesCartes((prev) => {
       const nouveau = { ...prev };
       if (quantite === 0) {
         delete nouveau[refCarte];
       } else {
         nouveau[refCarte] = quantite;
       }
-      console.log('📊 [Frontend] Quantités mises à jour :', nouveau);
+      console.log("📊 [Frontend] Quantités mises à jour :", nouveau);
       return nouveau;
     });
   };
@@ -330,7 +346,7 @@ function Alibalek() {
       di: { disponible: 0, utilise: 0, restant: 0 },
       do: { disponible: 0, utilise: 0, restant: 0 },
       ai: { disponible: 0, utilise: 0, restant: 0 },
-      ao: { disponible: 0, utilise: 0, restant: 0 }
+      ao: { disponible: 0, utilise: 0, restant: 0 },
     };
 
     // Calculer les points disponibles selon les cartes sélectionnées
@@ -338,7 +354,9 @@ function Alibalek() {
       // Trouver la carte dans les cartes disponibles
       for (const marque in cartesDisponibles) {
         for (const type in cartesDisponibles[marque]) {
-          const carte = cartesDisponibles[marque][type].find(c => c.ref === ref);
+          const carte = cartesDisponibles[marque][type].find(
+            (c) => c.ref === ref
+          );
           if (carte) {
             stats.di.disponible += (carte.nb_di || 0) * quantite;
             stats.do.disponible += (carte.nb_do || 0) * quantite;
@@ -360,32 +378,43 @@ function Alibalek() {
             try {
               let contenu = e.target.result;
               // Supprimer le BOM UTF-8
-              contenu = contenu.replace(/^\uFEFF/, '').trim();
+              contenu = contenu.replace(/^\uFEFF/, "").trim();
               const donnees = JSON.parse(contenu);
-              
+
               if (Array.isArray(donnees)) {
-                stats.di.utilise = donnees.filter(p => p.TypePoint === 'DI').length;
-                stats.do.utilise = donnees.filter(p => p.TypePoint === 'DO').length;
-                stats.ai.utilise = donnees.filter(p => p.TypePoint === 'AI').length;
-                stats.ao.utilise = donnees.filter(p => p.TypePoint === 'AO').length;
+                stats.di.utilise = donnees.filter(
+                  (p) => p.TypePoint === "DI"
+                ).length;
+                stats.do.utilise = donnees.filter(
+                  (p) => p.TypePoint === "DO"
+                ).length;
+                stats.ai.utilise = donnees.filter(
+                  (p) => p.TypePoint === "AI"
+                ).length;
+                stats.ao.utilise = donnees.filter(
+                  (p) => p.TypePoint === "AO"
+                ).length;
               }
-              
+
               // Calculer les points restants
               stats.di.restant = stats.di.disponible - stats.di.utilise;
               stats.do.restant = stats.do.disponible - stats.do.utilise;
               stats.ai.restant = stats.ai.disponible - stats.ai.utilise;
               stats.ao.restant = stats.ao.disponible - stats.ao.utilise;
-              
+
               resolve(stats);
             } catch (err) {
-              console.error('Erreur lors du calcul des stats :', err);
+              console.error("Erreur lors du calcul des stats :", err);
               resolve(stats);
             }
           };
           reader.readAsText(fichierJson);
         });
       } catch (err) {
-        console.error('Erreur lors de la lecture du fichier pour les stats :', err);
+        console.error(
+          "Erreur lors de la lecture du fichier pour les stats :",
+          err
+        );
         return Promise.resolve(stats);
       }
     }
@@ -400,7 +429,7 @@ function Alibalek() {
     di: { disponible: 0, utilise: 0, restant: 0 },
     do: { disponible: 0, utilise: 0, restant: 0 },
     ai: { disponible: 0, utilise: 0, restant: 0 },
-    ao: { disponible: 0, utilise: 0, restant: 0 }
+    ao: { disponible: 0, utilise: 0, restant: 0 },
   });
 
   /**
@@ -409,21 +438,26 @@ function Alibalek() {
    */
   useEffect(() => {
     // Calculer les statistiques de manière asynchrone
-    calculerStatistiquesPoints().then(stats => {
-      setStatistiquesPoints(stats);
-      console.log('📊 [Frontend] Statistiques mises à jour :', stats);
-    }).catch(err => {
-      console.error('❌ [Frontend] Erreur lors du calcul des statistiques :', err);
-    });
+    calculerStatistiquesPoints()
+      .then((stats) => {
+        setStatistiquesPoints(stats);
+        console.log("📊 [Frontend] Statistiques mises à jour :", stats);
+      })
+      .catch((err) => {
+        console.error(
+          "❌ [Frontend] Erreur lors du calcul des statistiques :",
+          err
+        );
+      });
   }, [fichierJson, quantitesCartes, cartesDisponibles]);
 
   /**
    * Bascule l'état déplié/replié d'une marque
    */
   const basculerMarque = (marque) => {
-    setMarquesDepliees(prev => ({
+    setMarquesDepliees((prev) => ({
       ...prev,
-      [marque]: !prev[marque]
+      [marque]: !prev[marque],
     }));
   };
 
@@ -434,16 +468,16 @@ function Alibalek() {
   const genererSchema = async () => {
     // Validation : on vérifie que tout est rempli
     if (!fichierJson) {
-      alert('Veuillez sélectionner un fichier JSON');
+      alert("Veuillez sélectionner un fichier JSON");
       return;
     }
 
     const refs = obtenirListeRefs();
     if (refs.length === 0) {
-      alert('Veuillez sélectionner au moins une carte');
+      alert("Veuillez sélectionner au moins une carte");
       return;
     }
-    console.log('📋 [Frontend] Cartes sélectionnées :', refs);
+    console.log("📋 [Frontend] Cartes sélectionnées :", refs);
 
     // On active le mode chargement
     setEnChargement(true);
@@ -452,28 +486,31 @@ function Alibalek() {
       // FormData permet d'envoyer des fichiers via HTTP
       // C'est nécessaire pour l'upload de fichiers
       const formData = new FormData();
-      
+
       // On ajoute le fichier JSON
-      formData.append('fichierJson', fichierJson);
-      
+      formData.append("fichierJson", fichierJson);
+
       // On ajoute les cartes sélectionnées (on les convertit en JSON)
-      formData.append('refs', JSON.stringify(refs));
-      
+      formData.append("refs", JSON.stringify(refs));
+
       // On ajoute les paramètres du projet (format attendu par le backend)
-      formData.append('params', JSON.stringify({
-        auteur: parametresProjet.auteur,
-        nomSite: parametresProjet.nomSite,
-        nomArmoire: parametresProjet.nomArmoire,
-        dateEdition: parametresProjet.dateEdition,
-        indice: parametresProjet.indice,
-        nomProjet: parametresProjet.nomSite // Pour le nom du fichier de sortie
-      }));
+      formData.append(
+        "params",
+        JSON.stringify({
+          auteur: parametresProjet.auteur,
+          nomSite: parametresProjet.nomSite,
+          nomArmoire: parametresProjet.nomArmoire,
+          dateEdition: parametresProjet.dateEdition,
+          indice: parametresProjet.indice,
+          nomProjet: parametresProjet.nomSite, // Pour le nom du fichier de sortie
+        })
+      );
 
       // On envoie la requête POST au backend
       // On utilise '/api' grâce au proxy configuré dans vite.config.js
-      const reponse = await fetch('/api/generate', {
-        method: 'POST',
-        body: formData // Pas besoin de Content-Type, le navigateur le fait automatiquement
+      const reponse = await fetch("/api/generate", {
+        method: "POST",
+        body: formData, // Pas besoin de Content-Type, le navigateur le fait automatiquement
       });
 
       if (!reponse.ok) {
@@ -481,45 +518,51 @@ function Alibalek() {
         let erreurData = {};
         try {
           const texte = await reponse.text();
-          console.error('❌ [Frontend] Réponse d\'erreur brute :', texte);
+          console.error("❌ [Frontend] Réponse d'erreur brute :", texte);
           erreurData = JSON.parse(texte);
         } catch (e) {
-          console.error('❌ [Frontend] Impossible de parser la réponse d\'erreur :', e);
+          console.error(
+            "❌ [Frontend] Impossible de parser la réponse d'erreur :",
+            e
+          );
         }
-        
-        const messageErreur = erreurData.details || erreurData.erreur || `Erreur HTTP ${reponse.status}`;
-        console.error('❌ [Frontend] Détails de l\'erreur :', {
+
+        const messageErreur =
+          erreurData.details ||
+          erreurData.erreur ||
+          `Erreur HTTP ${reponse.status}`;
+        console.error("❌ [Frontend] Détails de l'erreur :", {
           status: reponse.status,
           statusText: reponse.statusText,
           erreur: erreurData.erreur,
           details: erreurData.details,
-          chemin: erreurData.chemin
+          chemin: erreurData.chemin,
         });
-        
+
         throw new Error(messageErreur);
       }
 
       // On récupère le fichier .drawio comme un Blob (Binary Large Object)
       const blob = await reponse.blob();
-      
+
       // On crée un lien de téléchargement
       const url = window.URL.createObjectURL(blob);
-      const lien = document.createElement('a');
+      const lien = document.createElement("a");
       lien.href = url;
-      lien.download = `${parametresProjet.nomSite || 'schema'}.drawio`;
-      
+      lien.download = `${parametresProjet.nomSite || "schema"}.drawio`;
+
       // On déclenche le téléchargement
       document.body.appendChild(lien);
       lien.click();
-      
+
       // On nettoie
       document.body.removeChild(lien);
       window.URL.revokeObjectURL(url);
 
-      console.log('✅ [Frontend] Schéma généré avec succès');
-      alert('Schéma généré avec succès !');
+      console.log("✅ [Frontend] Schéma généré avec succès");
+      alert("Schéma généré avec succès !");
     } catch (erreur) {
-      console.error('❌ [Frontend] Erreur lors de la génération :', erreur);
+      console.error("❌ [Frontend] Erreur lors de la génération :", erreur);
       alert(`Erreur lors de la génération du schéma : ${erreur.message}`);
     } finally {
       // On désactive le mode chargement dans tous les cas (succès ou erreur)
@@ -538,8 +581,13 @@ function Alibalek() {
         {modeleInfo ? (
           <div className="info-modele">
             <div className="info-modele-details">
-              <p><strong>Fichier :</strong> {modeleInfo.nom}</p>
-              <p><strong>Date d'upload :</strong> {formaterDate(modeleInfo.dateUpload)}</p>
+              <p>
+                <strong>Fichier :</strong> {modeleInfo.nom}
+              </p>
+              <p>
+                <strong>Date d'upload :</strong>{" "}
+                {formaterDate(modeleInfo.dateUpload)}
+              </p>
             </div>
             <div className="info-modele-actions">
               <input
@@ -547,10 +595,12 @@ function Alibalek() {
                 accept=".drawio"
                 onChange={gererUploadModele}
                 id="input-modele"
-                style={{ display: 'none' }}
+                style={{ display: "none" }}
               />
               <label htmlFor="input-modele" className="bouton-secondaire">
-                {chargementModele ? 'Mise à jour...' : 'Mettre à jour le modèle'}
+                {chargementModele
+                  ? "Mise à jour..."
+                  : "Mettre à jour le modèle"}
               </label>
             </div>
           </div>
@@ -564,10 +614,18 @@ function Alibalek() {
         <h3>Base de données SQLite</h3>
         <div className="info-modele">
           <div className="info-modele-details">
-            <p><strong>Fichier :</strong> database.sqlite3</p>
-            <p><strong>Description :</strong> Base de données contenant les informations des cartes automates</p>
+            <p>
+              <strong>Fichier :</strong> database.sqlite3
+            </p>
+            <p>
+              <strong>Description :</strong> Base de données contenant les
+              informations des cartes automates
+            </p>
           </div>
-          <div className="info-modele-actions" style={{ display: 'flex', gap: '1rem' }}>
+          <div
+            className="info-modele-actions"
+            style={{ display: "flex", gap: "1rem" }}
+          >
             <button
               onClick={telechargerBaseDeDonnees}
               className="bouton-secondaire"
@@ -579,7 +637,7 @@ function Alibalek() {
               accept=".sqlite3"
               onChange={gererUploadBaseDeDonnees}
               id="input-database"
-              style={{ display: 'none' }}
+              style={{ display: "none" }}
             />
             <label htmlFor="input-database" className="bouton-secondaire">
               📤 Mettre à jour
@@ -599,17 +657,26 @@ function Alibalek() {
             id="input-fichier"
           />
           <label htmlFor="input-fichier" className="bouton-upload">
-            {fichierJson ? `Fichier sélectionné : ${fichierJson.name}` : 'Sélectionner un fichier JSON'}
+            {fichierJson
+              ? `Fichier sélectionné : ${fichierJson.name}`
+              : "Sélectionner un fichier JSON"}
           </label>
         </div>
       </section>
 
       {/* Section 2 : Sélection des cartes */}
       <section className="section-cartes">
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: "1rem",
+          }}
+        >
           <h3 style={{ margin: 0 }}>2. Sélection des cartes</h3>
-          <button 
-            onClick={chargerCartes} 
+          <button
+            onClick={chargerCartes}
             className="bouton-rafraichir"
             title="Recharger les cartes"
           >
@@ -625,128 +692,181 @@ function Alibalek() {
               <div className="stat-item">
                 <span className="stat-label">DI</span>
                 <span className="stat-valeur">
-                  {statistiquesPoints.di.utilise} / {statistiquesPoints.di.disponible}
+                  {statistiquesPoints.di.utilise} /{" "}
+                  {statistiquesPoints.di.disponible}
                   {statistiquesPoints.di.restant >= 0 ? (
-                    <span className="stat-restant positif"> ({statistiquesPoints.di.restant} restants)</span>
+                    <span className="stat-restant positif">
+                      {" "}
+                      ({statistiquesPoints.di.restant} restants)
+                    </span>
                   ) : (
-                    <span className="stat-restant negatif"> ({Math.abs(statistiquesPoints.di.restant)} en trop)</span>
+                    <span className="stat-restant negatif">
+                      {" "}
+                      ({Math.abs(statistiquesPoints.di.restant)} en trop)
+                    </span>
                   )}
                 </span>
               </div>
               <div className="stat-item">
                 <span className="stat-label">DO</span>
                 <span className="stat-valeur">
-                  {statistiquesPoints.do.utilise} / {statistiquesPoints.do.disponible}
+                  {statistiquesPoints.do.utilise} /{" "}
+                  {statistiquesPoints.do.disponible}
                   {statistiquesPoints.do.restant >= 0 ? (
-                    <span className="stat-restant positif"> ({statistiquesPoints.do.restant} restants)</span>
+                    <span className="stat-restant positif">
+                      {" "}
+                      ({statistiquesPoints.do.restant} restants)
+                    </span>
                   ) : (
-                    <span className="stat-restant negatif"> ({Math.abs(statistiquesPoints.do.restant)} en trop)</span>
+                    <span className="stat-restant negatif">
+                      {" "}
+                      ({Math.abs(statistiquesPoints.do.restant)} en trop)
+                    </span>
                   )}
                 </span>
               </div>
               <div className="stat-item">
                 <span className="stat-label">AI</span>
                 <span className="stat-valeur">
-                  {statistiquesPoints.ai.utilise} / {statistiquesPoints.ai.disponible}
+                  {statistiquesPoints.ai.utilise} /{" "}
+                  {statistiquesPoints.ai.disponible}
                   {statistiquesPoints.ai.restant >= 0 ? (
-                    <span className="stat-restant positif"> ({statistiquesPoints.ai.restant} restants)</span>
+                    <span className="stat-restant positif">
+                      {" "}
+                      ({statistiquesPoints.ai.restant} restants)
+                    </span>
                   ) : (
-                    <span className="stat-restant negatif"> ({Math.abs(statistiquesPoints.ai.restant)} en trop)</span>
+                    <span className="stat-restant negatif">
+                      {" "}
+                      ({Math.abs(statistiquesPoints.ai.restant)} en trop)
+                    </span>
                   )}
                 </span>
               </div>
               <div className="stat-item">
                 <span className="stat-label">AO</span>
                 <span className="stat-valeur">
-                  {statistiquesPoints.ao.utilise} / {statistiquesPoints.ao.disponible}
+                  {statistiquesPoints.ao.utilise} /{" "}
+                  {statistiquesPoints.ao.disponible}
                   {statistiquesPoints.ao.restant >= 0 ? (
-                    <span className="stat-restant positif"> ({statistiquesPoints.ao.restant} restants)</span>
+                    <span className="stat-restant positif">
+                      {" "}
+                      ({statistiquesPoints.ao.restant} restants)
+                    </span>
                   ) : (
-                    <span className="stat-restant negatif"> ({Math.abs(statistiquesPoints.ao.restant)} en trop)</span>
+                    <span className="stat-restant negatif">
+                      {" "}
+                      ({Math.abs(statistiquesPoints.ao.restant)} en trop)
+                    </span>
                   )}
                 </span>
               </div>
             </div>
           </div>
         )}
-        
+
         {Object.keys(cartesDisponibles).length > 0 ? (
           <div className="cartes-groupées">
             {Object.entries(cartesDisponibles).map(([marque, types]) => {
               const estDepliee = marquesDepliees[marque] || false;
-              
+
               return (
                 <div key={marque} className="groupe-marque">
-                  <div className="titre-marque-container" onClick={() => basculerMarque(marque)}>
+                  <div
+                    className="titre-marque-container"
+                    onClick={() => basculerMarque(marque)}
+                  >
                     <button className="chevron" type="button">
-                      {estDepliee ? '▼' : '▶'}
+                      {estDepliee ? "▼" : "▶"}
                     </button>
                     <h4 className="titre-marque">{marque}</h4>
                   </div>
-                  {estDepliee && Object.entries(types).map(([type, cartes]) => (
-                    <div key={type} className="groupe-type">
-                      <h5 className="titre-type">{type}</h5>
-                      <div className="liste-cartes">
-                        {cartes.map((carte) => {
-                          const quantite = quantitesCartes[carte.ref] || 0;
-                          const estAutomate = carte.type === 'automate';
-                          const maxQuantite = estAutomate ? 1 : 10;
-                          
-                          return (
-                            <div key={carte.ref} className="carte-item">
-                              <label className="carte-label">
-                                <span className="carte-nom">{carte.nom_complet || carte.nom}</span>
-                                <div className="carte-controles">
-                                  <button
-                                    type="button"
-                                    className="bouton-quantite"
-                                    onClick={() => mettreAJourQuantite(carte.ref, Math.max(0, quantite - 1))}
-                                    disabled={quantite === 0}
-                                  >
-                                    −
-                                  </button>
-                                  <input
-                                    type="number"
-                                    min="0"
-                                    max={maxQuantite}
-                                    value={quantite}
-                                    onChange={(e) => {
-                                      const nouvelleQuantite = parseInt(e.target.value) || 0;
-                                      mettreAJourQuantite(carte.ref, Math.min(nouvelleQuantite, maxQuantite));
-                                    }}
-                                    className="input-quantite"
-                                  />
-                                  <button
-                                    type="button"
-                                    className="bouton-quantite"
-                                    onClick={() => mettreAJourQuantite(carte.ref, Math.min(maxQuantite, quantite + 1))}
-                                    disabled={quantite >= maxQuantite}
-                                  >
-                                    +
-                                  </button>
+                  {estDepliee &&
+                    Object.entries(types).map(([type, cartes]) => (
+                      <div key={type} className="groupe-type">
+                        <h5 className="titre-type">{type}</h5>
+                        <div className="liste-cartes">
+                          {cartes.map((carte) => {
+                            const quantite = quantitesCartes[carte.ref] || 0;
+                            const estAutomate = carte.type === "automate";
+                            const maxQuantite = estAutomate ? 1 : 10;
+
+                            return (
+                              <div key={carte.ref} className="carte-item">
+                                <label className="carte-label">
+                                  <span className="carte-nom">
+                                    {carte.nom_complet || carte.nom}
+                                  </span>
+                                  <div className="carte-controles">
+                                    <button
+                                      type="button"
+                                      className="bouton-quantite"
+                                      onClick={() =>
+                                        mettreAJourQuantite(
+                                          carte.ref,
+                                          Math.max(0, quantite - 1)
+                                        )
+                                      }
+                                      disabled={quantite === 0}
+                                    >
+                                      −
+                                    </button>
+                                    <input
+                                      type="number"
+                                      min="0"
+                                      max={maxQuantite}
+                                      value={quantite}
+                                      onChange={(e) => {
+                                        const nouvelleQuantite =
+                                          parseInt(e.target.value) || 0;
+                                        mettreAJourQuantite(
+                                          carte.ref,
+                                          Math.min(
+                                            nouvelleQuantite,
+                                            maxQuantite
+                                          )
+                                        );
+                                      }}
+                                      className="input-quantite"
+                                    />
+                                    <button
+                                      type="button"
+                                      className="bouton-quantite"
+                                      onClick={() =>
+                                        mettreAJourQuantite(
+                                          carte.ref,
+                                          Math.min(maxQuantite, quantite + 1)
+                                        )
+                                      }
+                                      disabled={quantite >= maxQuantite}
+                                    >
+                                      +
+                                    </button>
+                                  </div>
+                                  {estAutomate && quantite > 0 && (
+                                    <span className="badge-automate">
+                                      Automate
+                                    </span>
+                                  )}
+                                </label>
+                                <div className="carte-infos">
+                                  <span>DI: {carte.nb_di}</span>
+                                  <span>DO: {carte.nb_do}</span>
+                                  <span>AI: {carte.nb_ai}</span>
+                                  <span>AO: {carte.nb_ao}</span>
                                 </div>
-                                {estAutomate && quantite > 0 && (
-                                  <span className="badge-automate">Automate</span>
-                                )}
-                              </label>
-                              <div className="carte-infos">
-                                <span>DI: {carte.nb_di}</span>
-                                <span>DO: {carte.nb_do}</span>
-                                <span>AI: {carte.nb_ai}</span>
-                                <span>AO: {carte.nb_ao}</span>
                               </div>
-                            </div>
-                          );
-                        })}
+                            );
+                          })}
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
                 </div>
               );
             })}
           </div>
         ) : (
-          <p style={{ textAlign: 'center', color: '#666', padding: '2rem' }}>
+          <p style={{ textAlign: "center", color: "#666", padding: "2rem" }}>
             Chargement des cartes...
           </p>
         )}
@@ -764,12 +884,12 @@ function Alibalek() {
               onChange={(e) => {
                 setParametresProjet({
                   ...parametresProjet,
-                  auteur: e.target.value
+                  auteur: e.target.value,
                 });
               }}
             />
           </label>
-          
+
           <label>
             Nom du site :
             <input
@@ -778,12 +898,12 @@ function Alibalek() {
               onChange={(e) => {
                 setParametresProjet({
                   ...parametresProjet,
-                  nomSite: e.target.value
+                  nomSite: e.target.value,
                 });
               }}
             />
           </label>
-          
+
           <label>
             Nom armoire :
             <input
@@ -792,12 +912,12 @@ function Alibalek() {
               onChange={(e) => {
                 setParametresProjet({
                   ...parametresProjet,
-                  nomArmoire: e.target.value
+                  nomArmoire: e.target.value,
                 });
               }}
             />
           </label>
-          
+
           <label>
             Date dernière édition :
             <input
@@ -806,12 +926,12 @@ function Alibalek() {
               onChange={(e) => {
                 setParametresProjet({
                   ...parametresProjet,
-                  dateEdition: e.target.value
+                  dateEdition: e.target.value,
                 });
               }}
             />
           </label>
-          
+
           <label>
             Indice :
             <input
@@ -820,7 +940,7 @@ function Alibalek() {
               onChange={(e) => {
                 setParametresProjet({
                   ...parametresProjet,
-                  indice: e.target.value
+                  indice: e.target.value,
                 });
               }}
             />
@@ -835,7 +955,7 @@ function Alibalek() {
           disabled={enChargement}
           className="bouton-principal"
         >
-          {enChargement ? 'Génération en cours...' : 'Générer le schéma'}
+          {enChargement ? "Génération en cours..." : "Générer le schéma"}
         </button>
       </section>
     </div>
@@ -843,4 +963,3 @@ function Alibalek() {
 }
 
 export default Alibalek;
-
