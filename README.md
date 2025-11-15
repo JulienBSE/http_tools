@@ -216,7 +216,7 @@ docker compose logs -f
 ```
 
 L'application sera accessible sur :
-- **Frontend** : `http://votre-serveur` (port 80)
+- **Frontend** : `http://votre-serveur:8888` (port 8888)
 - **Backend API** : `http://votre-serveur:3000`
 
 ### Fichiers de Déploiement

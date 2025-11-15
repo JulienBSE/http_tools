@@ -73,9 +73,9 @@ services:
       context: .
       dockerfile: Dockerfile.frontend
 
-    # Ports exposés : le frontend sera accessible sur http://localhost:80
+    # Ports exposés : le frontend sera accessible sur http://localhost:8888
     ports:
-      - "80:80"
+      - "8888:80"
 
     # Dépend du backend (attendre que le backend soit prêt)
     depends_on:

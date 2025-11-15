@@ -91,7 +91,7 @@ docker compose logs -f
 
 Une fois déployée, l'application est accessible :
 
-- **Frontend** : `http://votre-serveur` (port 80)
+- **Frontend** : `http://votre-serveur:8888` (port 8888)
 - **Backend API** : `http://votre-serveur:3000` (directement, ou via `/api` depuis le frontend)
 
 ---
@@ -112,7 +112,7 @@ server {
     server_name http-tools.mon-entreprise.com;
     
     location / {
-        proxy_pass http://localhost:80;
+        proxy_pass http://localhost:8888;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
     }
@@ -244,7 +244,7 @@ tar -czf backups/modeles_$(date +%Y%m%d).tar.gz backend/modeles/
 
 En cas de problème, vérifiez :
 1. Les logs des conteneurs
-2. Que les ports 80 et 3000 ne sont pas utilisés par d'autres services
+2. Que les ports 8888 et 3000 ne sont pas utilisés par d'autres services
 3. Que les fichiers de données (BDD, modèles) existent et sont accessibles
 4. Que Docker et Docker Compose sont à jour
 
