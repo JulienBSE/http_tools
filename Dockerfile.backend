@@ -9,10 +9,12 @@ FROM node:20-slim
 
 # Installer les outils nécessaires pour compiler better-sqlite3 (module natif)
 # python3, make, g++ sont requis pour compiler les modules Node.js natifs
+# curl est nécessaire pour le healthcheck Docker
 RUN apt-get update && apt-get install -y \
     python3 \
     make \
     g++ \
+    curl \
     && rm -rf /var/lib/apt/lists/*
 
 # Définir le répertoire de travail dans le conteneur
