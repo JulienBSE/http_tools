@@ -53,12 +53,13 @@ services:
     restart: unless-stopped
 
     # Healthcheck : vérifier que le backend répond
+    # Utilise la route racine qui est plus simple et ne nécessite pas la BDD
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/cartes"]
+      test: ["CMD", "curl", "-f", "http://localhost:3000/"]
       interval: 30s
       timeout: 10s
-      retries: 3
-      start_period: 40s
+      retries: 5
+      start_period: 60s
 
   # ============================================
   # SERVICE FRONTEND

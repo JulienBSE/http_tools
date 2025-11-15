@@ -32,8 +32,8 @@ RUN npm install --only=production --verbose
 # Copier tout le code du backend
 COPY backend/ ./
 
-# Créer le dossier output s'il n'existe pas
-RUN mkdir -p output
+# Créer les dossiers nécessaires
+RUN mkdir -p output && mkdir -p data
 
 # Exposer le port sur lequel le serveur écoute
 EXPOSE 3000
