@@ -1,0 +1,47 @@
+# ============================================
+# DOCKER IGNORE
+# ============================================
+# Fichiers et dossiers à exclure lors de la copie dans l'image Docker
+# Cela réduit la taille de l'image et accélère le build
+
+# Node modules (seront réinstallés dans le conteneur)
+node_modules/
+**/node_modules/
+
+# Build et distribution
+dist/
+build/
+output/
+
+# Git
+.git/
+.gitignore
+
+# Documentation
+README.md
+*.md
+
+# Fichiers de développement
+.env.local
+.env.development
+*.log
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Fichiers temporaires
+*.tmp
+*.temp
+*.drawio
+
+# Projet Python (sauvegarde)
+projet_python_save/
+
+# Fichiers de test
+draw_io_generes/
+

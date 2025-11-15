@@ -1,0 +1,99 @@
+# ============================================
+# DOCKER COMPOSE - Configuration du déploiement
+# ============================================
+# Ce fichier orchestre le déploiement de l'application complète
+# Il définit les services (frontend, backend) et leur configuration
+
+version: "3.8"
+
+services:
+  # ============================================
+  # SERVICE BACKEND
+  # ============================================
+  backend:
+    # Nom du service (utilisé pour la communication entre conteneurs)
+    container_name: http-tools-backend
+
+    # Utiliser le Dockerfile du backend
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+
+    # Ports exposés : port_hôte:port_conteneur
+    # Le backend sera accessible sur http://localhost:3000 depuis la machine hôte
+    ports:
+      - "3000:3000"
+
+    # Variables d'environnement (optionnel, peut être surchargé par .env)
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+
+    # Volumes : monter des dossiers de la machine hôte dans le conteneur
+    # Cela permet de persister les données (BDD, fichiers générés)
+    volumes:
+      # Base de données SQLite (persistante)
+      - ./backend/database.sqlite3:/app/database.sqlite3:ro # Lecture seule
+      # Modèles Draw.io (persistants)
+      - ./backend/modeles:/app/modeles:ro # Lecture seule
+      # Dossier de sortie (lecture/écriture pour les fichiers générés)
+      - ./backend/output:/app/output
+
+    # Réseau : tous les services partagent le même réseau
+    networks:
+      - http-tools-network
+
+    # Redémarrer automatiquement en cas de crash
+    restart: unless-stopped
+
+    # Healthcheck : vérifier que le backend répond
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--quiet",
+          "--tries=1",
+          "--spider",
+          "http://localhost:3000/cartes",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # ============================================
+  # SERVICE FRONTEND
+  # ============================================
+  frontend:
+    # Nom du service
+    container_name: http-tools-frontend
+
+    # Utiliser le Dockerfile du frontend
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+
+    # Ports exposés : le frontend sera accessible sur http://localhost:80
+    ports:
+      - "80:80"
+
+    # Dépend du backend (attendre que le backend soit prêt)
+    depends_on:
+      backend:
+        condition: service_healthy
+
+    # Réseau partagé avec le backend
+    networks:
+      - http-tools-network
+
+    # Redémarrer automatiquement
+    restart: unless-stopped
+
+# ============================================
+# RÉSEAUX
+# ============================================
+# Définit un réseau Docker pour que les services communiquent entre eux
+networks:
+  http-tools-network:
+    driver: bridge

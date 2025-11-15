@@ -186,6 +186,49 @@ Le fichier JSON doit être :
 
 ---
 
+## 🚀 Déploiement en Production
+
+### Option Recommandée : Docker + Portainer
+
+L'application peut être déployée facilement avec Docker. Voir le guide complet dans [`DEPLOY.md`](./DEPLOY.md).
+
+**Déploiement rapide :**
+
+```bash
+# Rendre le script exécutable (Linux/Mac)
+chmod +x deploy.sh
+
+# Lancer le déploiement
+./deploy.sh
+```
+
+**Ou manuellement :**
+
+```bash
+# Construire et démarrer les conteneurs
+docker compose up -d
+
+# Vérifier l'état
+docker compose ps
+
+# Voir les logs
+docker compose logs -f
+```
+
+L'application sera accessible sur :
+- **Frontend** : `http://votre-serveur` (port 80)
+- **Backend API** : `http://votre-serveur:3000`
+
+### Fichiers de Déploiement
+
+- `Dockerfile.backend` - Image Docker pour le backend
+- `Dockerfile.frontend` - Image Docker pour le frontend (build React + Nginx)
+- `docker-compose.yml` - Orchestration des services
+- `nginx.conf` - Configuration Nginx pour servir le frontend et proxy les API
+- `deploy.sh` - Script de déploiement automatique
+
+---
+
 ## 📝 Notes Techniques
 
 ### Technologies utilisées

@@ -1,0 +1,36 @@
+# ============================================
+# DOCKERFILE BACKEND - Node.js + Express
+# ============================================
+# Ce Dockerfile crée une image Docker pour le backend
+# Il installe les dépendances et démarre le serveur Express
+
+# Utiliser une image Node.js officielle (version LTS)
+FROM node:20-alpine
+
+# Définir le répertoire de travail dans le conteneur
+WORKDIR /app
+
+# Copier les fichiers package.json pour installer les dépendances
+# On copie d'abord les dépendances pour bénéficier du cache Docker
+COPY backend/package*.json ./
+
+# Installer les dépendances
+# --production=false pour installer aussi les devDependencies si nécessaire
+RUN npm ci --only=production
+
+# Copier tout le code du backend
+COPY backend/ ./
+
+# Créer le dossier output s'il n'existe pas
+RUN mkdir -p output
+
+# Exposer le port sur lequel le serveur écoute
+EXPOSE 3000
+
+# Variable d'environnement pour Node.js (production)
+ENV NODE_ENV=production
+
+# Commande pour démarrer le serveur
+# Utiliser "node" au lieu de "node --watch" en production
+CMD ["node", "server.js"]
+

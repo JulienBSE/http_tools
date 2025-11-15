@@ -1,0 +1,42 @@
+# ============================================
+# DOCKERFILE FRONTEND - Build React + Vite
+# ============================================
+# Ce Dockerfile crée une image Docker pour le frontend
+# Il build l'application React et la sert avec Nginx
+
+# Étape 1 : Build de l'application React
+FROM node:20-alpine AS builder
+
+# Définir le répertoire de travail
+WORKDIR /app
+
+# Copier les fichiers package.json
+COPY frontend/package*.json ./
+
+# Installer les dépendances (y compris devDependencies pour le build)
+RUN npm ci
+
+# Copier tout le code du frontend
+COPY frontend/ ./
+
+# Build de l'application React en mode production
+# Cela crée un dossier "dist" avec les fichiers statiques optimisés
+RUN npm run build
+
+# Étape 2 : Servir les fichiers statiques avec Nginx
+FROM nginx:alpine
+
+# Copier les fichiers buildés depuis l'étape précédente
+COPY --from=builder /app/dist /usr/share/nginx/html
+
+# Copier la configuration Nginx personnalisée
+# (on va créer ce fichier pour proxy les API vers le backend)
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# Exposer le port 80 (port HTTP standard)
+EXPOSE 80
+
+# Nginx démarre automatiquement, pas besoin de CMD explicite
+# Mais on peut le spécifier pour être clair
+CMD ["nginx", "-g", "daemon off;"]
+
