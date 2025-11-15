@@ -35,10 +35,17 @@ COPY backend/ ./
 # Copier le fichier database.sqlite3 initial (sera utilisé par le script d'init)
 # Le fichier sera copié dans le volume Docker au démarrage si nécessaire
 # Note: Si le fichier n'existe pas, le build continuera et le script d'init gérera le cas
-COPY backend/database.sqlite3 ./database.sqlite3.initial
+RUN cp database.sqlite3 database.sqlite3.initial 2>/dev/null || echo "⚠️ database.sqlite3 non trouvé"
 
-# Copier les modèles Draw.io dans l'image (seront utilisés si le volume est vide)
-COPY backend/modeles ./modeles.initial
+# Créer le dossier modeles.initial et copier les modèles depuis le code copié
+# Les modèles sont déjà dans ./modeles/ grâce au COPY backend/ ci-dessus
+RUN mkdir -p ./modeles.initial && \
+    if [ -d "./modeles" ] && [ "$(ls -A ./modeles 2>/dev/null)" ]; then \
+        cp -r ./modeles/* ./modeles.initial/; \
+        echo "✅ Modèles copiés dans modeles.initial"; \
+    else \
+        echo "⚠️ Dossier modeles vide ou absent, sera initialisé au démarrage"; \
+    fi
 
 # Créer les dossiers nécessaires
 RUN mkdir -p output && mkdir -p data && mkdir -p modeles
