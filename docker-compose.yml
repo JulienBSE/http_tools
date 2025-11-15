@@ -11,6 +11,9 @@ services:
   # SERVICE BACKEND
   # ============================================
   backend:
+    # Script d'initialisation (créer les fichiers nécessaires avant le montage)
+    # Note: Ce script doit être exécuté manuellement avant le premier déploiement
+    # ou via un script de déploiement
     # Nom du service (utilisé pour la communication entre conteneurs)
     container_name: http-tools-backend
 
@@ -30,13 +33,13 @@ services:
       - PORT=3000
 
     # Volumes : monter des dossiers de la machine hôte dans le conteneur
-    # Cela permet de persister les données (BDD, fichiers générés)
+    # IMPORTANT: Le fichier database.sqlite3 doit exister (créé vide dans le repo)
     volumes:
-      # Base de données SQLite (persistante)
-      - ./backend/database.sqlite3:/app/database.sqlite3:ro # Lecture seule
-      # Modèles Draw.io (persistants)
-      - ./backend/modeles:/app/modeles:ro # Lecture seule
-      # Dossier de sortie (lecture/écriture pour les fichiers générés)
+      # Base de données SQLite (fichier vide créé dans le repo)
+      - ./backend/database.sqlite3:/app/database.sqlite3
+      # Modèles Draw.io (depuis le repo Git - doit exister)
+      - ./backend/modeles:/app/modeles:ro
+      # Dossier de sortie (pour les fichiers générés)
       - ./backend/output:/app/output
 
     # Réseau : tous les services partagent le même réseau
