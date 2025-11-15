@@ -1,45 +1,82 @@
-# Dépendances
+# ============================================
+# Dépendances Node.js
+# ============================================
 node_modules/
 **/node_modules/
 package-lock.json
 **/package-lock.json
+yarn.lock
+pnpm-lock.yaml
 
-# Build
+# ============================================
+# Build / Distribution
+# ============================================
 frontend/dist/
+frontend/dist-ssr/
 frontend/build/
+backend/output/
 
+# ============================================
 # Logs
+# ============================================
+logs
 *.log
 npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
 
-# Environnement
+# ============================================
+# Environnement / Variables d'environnement
+# ============================================
 .env
 .env.local
+.env.*.local
+*.local
 
-# IDE
-.vscode/
+# ============================================
+# IDE / Éditeurs
+# ============================================
+.vscode/*
+!.vscode/extensions.json
 .idea/
 *.swp
 *.swo
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
 
+# ============================================
 # OS
+# ============================================
 .DS_Store
 Thumbs.db
 
-# Base de données SQLite (si elle contient des données sensibles)
-# backend/database.db
+# ============================================
+# Base de données SQLite
+# ============================================
+# backend/database.db (décommenter si nécessaire)
 
+# ============================================
 # Fichiers de sortie générés
-backend/output/
+# ============================================
 *.drawio
 
+# ============================================
 # Projet Python (sauvegarde)
+# ============================================
 projet_python_save/
 
+# ============================================
 # Fichiers de test/debug
+# ============================================
 draw_io_generes/
 
+# ============================================
 # Fichiers temporaires
+# ============================================
 *.tmp
 *.temp
-
