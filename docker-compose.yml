@@ -31,12 +31,15 @@ services:
     environment:
       - NODE_ENV=production
       - PORT=3000
+      # Chemin de la base de données dans le volume monté
+      - DB_PATH=/app/data/database.sqlite3
 
-    # Volumes : monter des dossiers de la machine hôte dans le conteneur
-    # IMPORTANT: Le fichier database.sqlite3 doit exister (créé vide dans le repo)
+    # Volumes : utiliser un volume nommé pour la BDD (plus robuste)
+    # Les volumes nommés sont créés automatiquement par Docker
     volumes:
-      # Base de données SQLite (fichier vide créé dans le repo)
-      - ./backend/database.sqlite3:/app/database.sqlite3
+      # Base de données SQLite (volume nommé - créé automatiquement)
+      # Le fichier sera créé par l'application dans ce volume
+      - http-tools-db:/app/data
       # Modèles Draw.io (depuis le repo Git - doit exister)
       - ./backend/modeles:/app/modeles:ro
       # Dossier de sortie (pour les fichiers générés)
@@ -100,3 +103,13 @@ services:
 networks:
   http-tools-network:
     driver: bridge
+
+# ============================================
+# VOLUMES NOMÉS
+# ============================================
+# Volumes Docker pour la persistance des données
+# Ces volumes sont créés automatiquement par Docker
+volumes:
+  # Volume pour la base de données SQLite
+  http-tools-db:
+    driver: local

@@ -17,7 +17,10 @@ const __dirname = dirname(__filename);
 // ============================================
 
 // Chemin de la base de données SQLite
-export const CHEMIN_BDD = join(__dirname, 'database.sqlite3');
+// Utilise la variable d'environnement DB_PATH si définie (pour Docker)
+// Sinon, utilise le chemin par défaut dans le dossier backend
+const dbPath = process.env.DB_PATH || join(__dirname, 'database.sqlite3');
+export const CHEMIN_BDD = dbPath;
 
 // Chemin du dossier contenant les modèles Draw.io
 export const CHEMIN_MODELES = join(__dirname, 'modeles');
