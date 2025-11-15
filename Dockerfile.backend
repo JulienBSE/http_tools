@@ -4,8 +4,8 @@
 # Ce Dockerfile crée une image Docker pour le backend
 # Il installe les dépendances et démarre le serveur Express
 
-# Utiliser une image Node.js officielle (version LTS)
-FROM node:20-alpine
+# Utiliser une image Node.js officielle basée sur Debian (pour better-sqlite3)
+FROM node:20-slim
 
 # Définir le répertoire de travail dans le conteneur
 WORKDIR /app
@@ -33,4 +33,3 @@ ENV NODE_ENV=production
 # Commande pour démarrer le serveur
 # Utiliser "node" au lieu de "node --watch" en production
 CMD ["node", "server.js"]
-
